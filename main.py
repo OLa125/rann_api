@@ -7,7 +7,21 @@ import torch
 import tensorflow as tf
 import torchvision.transforms as transforms
 
+
+import os
+import subprocess
+
+# تأكد من وجود المجلد وتحميله من Google Drive لو مش موجود
+if not os.path.exists("models"):
+    os.makedirs("models", exist_ok=True)
+    folder_id = "1RiJEOWm3-BpP8AXZgu-gtAWQpHACxBtY"
+    subprocess.run(["gdown", f"--folder", f"https://drive.google.com/drive/folders/{folder_id}", "-O", "models"], check=True)
+
 app = FastAPI()
+@app.get("/")
+def read_root():
+    return {"message": "API is running"}
+
 
 # Load models
 skin_model = tf.keras.models.load_model("models/skin_classification_model.h5")
